@@ -4,18 +4,23 @@
             [hara.io.scheduler :as scheduler]
             [clojure.string :as str]))
 
-(defn send-email [prop pass]
-  (let [{:keys [host user email subject body receivers]} prop]
+(defn send-email [prop]
+  (let [{:keys [host pass email subject body receivers]} prop]
     (doseq [receiver receivers]
       (postal/send-message
        {:host host
-        :user user
+        :user email
         :pass pass
         :ssl true}
        {:from email
         :to receiver
         :subject subject
         :body body}))))
+
+(defn send-html-email [prop pass]
+  (let [body [{:type "text/html"
+               :content (slurp (:html-path prop))}]]
+    (send-email (assoc prop :body body :pass pass))))
 
 (defn run-at [time handler]
   (let [time-splitted (str/split time #":")]
