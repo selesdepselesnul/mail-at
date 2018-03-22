@@ -36,6 +36,10 @@
 (defn read-config [path]
   (read-string (slurp path)))
 
+(defn send-email-by-schedule [prop pass]
+  (run-at (:run-at prop)
+          #(send-html-email prop pass)))
+
 (defn -main
   [& args]
   (println "Init !"))
