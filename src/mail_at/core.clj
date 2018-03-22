@@ -33,6 +33,9 @@
                   (nth time-splitted 1)
                   (nth time-splitted 0))}}))))
 
+(defn read-config [path]
+  (read-string (slurp path)))
+
 (defn -main
   [& args]
   (println "Init !"))
